@@ -54,3 +54,7 @@ other terminal: python main.py
 ```pip freeze | xargs pip uninstall -y```
 - reinstall: 
 ```pip install -r requirements.txt```
+
+
+# UI
+```python ui.py``` and then http://127.0.0.1:5000/
