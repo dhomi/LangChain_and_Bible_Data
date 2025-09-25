@@ -1,98 +1,56 @@
-Top, Beni! Laten we een voorbeeldproject opzetten met **LangChain + Bijbeldata**. Dit project zal een eenvoudige AI-agent zijn die vragen over de Bijbel kan beantwoorden op basis van een lokale dataset. Later kun je Bach toevoegen als tweede domein.
+# Bible-Agent
+Let's set up a sample project using LangChain + Bible data. This project will be a simple AI agent that can answer questions about the Bible based on a local dataset. Later, you can add Bach as a second domain.
+
+author: Beni Dhomi 
+keywords: langchain, bible, openai, chromadb, vector-database, rag
+
+## What are we building?
+A Python project that:
+1. Loads Bible texts (e.g., KJV, ALB or NBV)
+2. Converts these texts into a searchable **vector database**
+3. Uses an AI agent (via OpenAI or a local model) to answer questions using LangChain + RAG
 
 ---
 
-## 🧰 **Wat gaan we bouwen?**
-Een Python-project dat:
-1. Bijbelteksten laadt (bijv. Statenvertaling of NBV)
-2. Deze teksten omzet naar een doorzoekbare **vector database**
-3. Een AI-agent gebruikt (via OpenAI of lokaal model) om vragen te beantwoorden met behulp van LangChain + RAG
-
----
-
-## 📦 **Benodigdheden**
-Je hebt nodig:
+## Prerequisites
+You need:
 - Python 3.10+
-- Een OpenAI API key (of lokaal model via Ollama)
-- De volgende Python packages:
-```bash
-pip install langchain openai chromadb tiktoken
-```
-
+- An local model via Ollama
 ---
 
-## 📁 **Structuur van het project**
+## Project Structure
 ```
-bijbel-agent/
+bible-agent/
 ├── data/
-│   └── bijbel.txt  # volledige tekst van de Bijbel
-├── main.py         # hoofdscript
+│   │   bible1.txt  # Complete text of the Bible
+│   └── bible2.txt  # Complete text of the Bible
+├── main.py         # Main script
 ├── .env            # API keys
 ```
 
 ---
 
-## 🧠 **Stap 1: Bijbeldata voorbereiden**
-Je kunt een tekstbestand gebruiken met de Bijbel, bijvoorbeeld:
+## Step 1: Preparing Bible Data
+You can use a text file with the Bible, for example:
 ```txt
-Genesis 1:1 In den beginne schiep God den hemel en de aarde.
-Genesis 1:2 En de aarde was woest en ledig...
+Genesis 1:1 In the beginning, God created the heaven and the earth.
+Genesis 1:2 And the earth was without form, and void...
 ...
 ```
 
----
+## 
+brew install ollama 
+ollama pull minstral
+ollama run minstral
 
-## 🧠 **Stap 2: LangChain + Chroma setup**
-Hier is een voorbeeld van `main.py`:
+other terminal: python main.py
 
-```python
-from langchain.vectorstores import Chroma
-from langchain.embeddings import OpenAIEmbeddings
-from langchain.text_splitter import CharacterTextSplitter
-from langchain.document_loaders import TextLoader
-from langchain.chains import RetrievalQA
-from langchain.llms import OpenAI
-import os
-from dotenv import load_dotenv
+## What can you do now?
+- Ask questions like: "What does the Bible say about love?"
+- Later expand with Bach-data (MIDI, texts, biographies)
+- Build an interface with Streamlit or Gradio
 
-load_dotenv()
-
-# Load Bijbeltekst
-loader = TextLoader("data/bijbel.txt")
-documents = loader.load()
-
-# Split in stukken
-text_splitter = CharacterTextSplitter(chunk_size=500, chunk_overlap=50)
-texts = text_splitter.split_documents(documents)
-
-# Embed en opslaan in vectorstore
-embeddings = OpenAIEmbeddings()
-db = Chroma.from_documents(texts, embeddings)
-
-# Retrieval chain
-retriever = db.as_retriever()
-qa_chain = RetrievalQA.from_chain_type(llm=OpenAI(), retriever=retriever)
-
-# Vraag stellen
-query = "Wat zegt de Bijbel over vergeving?"
-answer = qa_chain.run(query)
-print(answer)
-```
-
----
-
-## 🔐 **Stap 3: .env bestand**
-```env
-OPENAI_API_KEY=your_openai_key_here
-```
-
----
-
-## 🚀 **Wat kun je nu doen?**
-- Vragen stellen zoals: “Wat zegt Paulus over liefde?”
-- Later uitbreiden met Bach-data (MIDI, teksten, biografieën)
-- Interface bouwen met Streamlit of Gradio
-
----
-
-Wil je dat ik dit project als zip-bestand voor je genereer met een voorbeeldtekst en code? Of wil je eerst uitbreiden met Bach erbij?
+- trick to uninstall all venv packages: 
+```pip freeze | xargs pip uninstall -y```
+- reinstall: 
+```pip install -r requirements.txt```
